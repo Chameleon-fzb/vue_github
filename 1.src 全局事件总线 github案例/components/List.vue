@@ -13,7 +13,6 @@
 </template>
 
 <script>
-import PubSub from 'pubsub-js'
 export default {
 name:'List',
 	data() {
@@ -27,20 +26,16 @@ name:'List',
 			}
 		},
 methods:{
- getUsers(_,value){
+ getUsers(value){
     this.info={...this.info,...value}
  }
 }
 ,
 mounted(){
-  // ?组件一挂载就绑定事件
-  // this.$bus.$on('get-data',this.getUsers)
-  //?组件一挂载就订阅消息
- this.token = PubSub.subscribe('get-data', this.getUsers);
+  this.$bus.$on('get-data',this.getUsers)
 },
 beforeDestroy(){
-  //? 组件销毁前取消绑定事件
-  PubSub.unsubscribe(this.token)
+  this.$bus.$off('get-data')
 }
 }
 </script>
